@@ -67,7 +67,8 @@ void RLEListDestroy(RLEList list)
     free(list);
 }
 
-RLEListResult RLEListAppend(RLEList list, char value){
+RLEListResult RLEListAppend(RLEList list, char value)
+{
     if(list == NULL) {
         return RLE_LIST_NULL_ARGUMENT;
     }
@@ -89,7 +90,8 @@ RLEListResult RLEListAppend(RLEList list, char value){
     return RLE_LIST_SUCCESS;
 }
 
-int RLEListSize(RLEList list){
+int RLEListSize(RLEList list)
+{
     if (!list) {
         return RLE_LIST_NULL;
     }
@@ -104,6 +106,68 @@ int RLEListSize(RLEList list){
     return counter;
 }
 
+RLEListResult RLEListRemove(RLEList list, int index){
+    if (!list) {
+        return RLE_LIST_NULL;
+    }
+    if(RLEListSize(list)!=0) {
+        int current_idx = -1;
+        // Find the node for removal:
+        RLENode node;
+        RLENode prev_node = list->first;
+//        if(index == 0){
+//            if(node->repetitions > 0){
+//                node->repetitions--
+//            }
+//            else{
+//
+//            }
+//        }
+        while (current_idx != index) {
+            current_idx++
+            node = prev_node->next
+            helper_count = 0
+            while(helper_count<node->repetitions){
+
+            }
+
+
+
+        }
+    }
+
+}
+
+
+///https://piazza.com/class/l8vdfbb5pf86qf/post/116
+// typedef char (*MapFunction)(char);
+RLEListResult RLEListMap(RLEList list, MapFunction map_function)
+{
+    if (!list || !map_function){
+        return RLE_LIST_NULL_ARGUMENT;
+    }
+    RLENode temp = list->first;
+    while (temp)
+    {
+        temp->letter = map_function(temp->letter);
+        temp=temp->next;
+    }
+    return RLE_LIST_SUCCESS;
+}
+
+char* RLEListExportToString(RLEList list, RLEListResult* result)
+{
+    if (!result) {
+        return NULL;
+    }
+    if (!list) {
+        *result=RLE_LIST_NULL_ARGUMENT;
+        return NULL;
+    }
+
+    //return
+
+}
 
 
 
