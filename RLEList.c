@@ -15,7 +15,7 @@
 typedef struct RLENode_t {
     char letter;
     int repetitions;
-    RLENode_t* next;
+    struct RLENode_t* next;
 } *RLENode;
 
 struct RLEList_t{
@@ -40,6 +40,8 @@ struct RLEList_t{
 /*** Function Implement ***/
 //implement the functions here
 
+static RLENode RLEListGetNodeFromIndex(RLEList list, int index, RLEListResult *result);
+
 static int listLengthNodes (RLEList list)
 {
     assert(list);
@@ -59,7 +61,7 @@ RLEList RLEListCreate()
     if (!linkedList) {
         return NULL;
     }
-    linkedList->first = malloc(sizeof(*first));
+    linkedList->first = malloc(sizeof(*(linkedList->first)));
     if (!linkedList->first) {
         free(linkedList);
         return NULL;
@@ -68,6 +70,8 @@ RLEList RLEListCreate()
     linkedList->first->repetitions = 0;
     linkedList->first->letter= NULL_CHAR ;
     linkedList->last = linkedList->first;
+
+    return linkedList;
 }
 
 void RLEListDestroy(RLEList list)
@@ -95,7 +99,7 @@ RLEListResult RLEListAppend(RLEList list, char value)
 
     if(RLEListSize(list)==0 || list->last->letter != value )
     {
-        list->last->next = malloc(sizeof(*RLENode));
+        list->last->next = malloc(sizeof(*(list->last->next)));
         if (!list->last->next){
             return RLE_LIST_OUT_OF_MEMORY;
         }
@@ -249,7 +253,7 @@ char RLEListGet(RLEList list, int index, RLEListResult *result)
     // return node->letter;
 }
 
-RLENode RLEListGetNodeFromIndex(RLEList list, int index, RLEListResult *result){
+static RLENode RLEListGetNodeFromIndex(RLEList list, int index, RLEListResult *result){
     if (!list) {
         *result = RLE_LIST_NULL_ARGUMENT;
         return NULL;
