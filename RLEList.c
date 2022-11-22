@@ -162,7 +162,8 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
     RLENode temp = list->first;
     while (temp->next)
     {
-        char currentRow[EXPORT_TO_STRING_ROW_SIZE+1] = {temp->next->letter,temp->next->repetitions,LINE_FINISH, NULL_CHAR};
+        char currentRow[EXPORT_TO_STRING_ROW_SIZE+1] = {temp->next->letter,temp->next->repetitions,
+                                                        LINE_FINISH, NULL_CHAR};
         strcpy(tempStringPtr,currentRow);
         temp=temp->next;
         tempStringPtr+=EXPORT_TO_STRING_ROW_SIZE;
@@ -175,7 +176,7 @@ RLEListResult RLEListRemove(RLEList list, int index){
     if (!list) {
         return RLE_LIST_NULL_ARGUMENT;
     }
-    if(index + 1> RLEListSize(list)) { /// CHECK THIS +1 is correct??
+    if(index < 0 || index + 1 > RLEListSize(list)) { /// +1 should be correct
         return RLE_LIST_INDEX_OUT_OF_BOUNDS;
     }
     // int current_idx = 0;
@@ -184,11 +185,12 @@ RLEListResult RLEListRemove(RLEList list, int index){
     int indicesRemaining = index;
 
     // First move to the correct node, and previous node
-    while(indicesRemaining > node->repetitions){
+    while(indicesRemaining >= node->repetitions){
         indicesRemaining -= node->repetitions;
         prev_node = node;
         node = prev_node->next;
     }
+    /// for debug - we should desired node by here:
 
     // Deal with case where repetitions > 1 (simple case)
     if(node->repetitions > 1){
@@ -197,24 +199,33 @@ RLEListResult RLEListRemove(RLEList list, int index){
     }
         // Deal with case where repetitions == 1
     else{
-        // Deal with case where there is no next node:
-        if(node == list->last){
-            list->last = list->first;
+        // Deal with last node remove:
+        if(node->next == NULL) {
+            prev_node->next = NULL;
+            list->last=prev_node;
         }
+        // Deal with first node remove (after dummy):
+//        else if()
+//        {
+//            prev_node->next = node->next;
+//        }
             // Deal with the case where the previous node and next node have different letters:
-        else if(prev_node->letter != node->next->letter){
+        else if(list->first == prev_node || prev_node->letter != node->next->letter) { ///united above condition
             prev_node->next = node->next;
         }
             // Deal with case where the previous node and next node have SAME letter:
         else{
             prev_node->repetitions += node->next->repetitions;
             prev_node->next = node->next->next;
+            if(list->last==node->next) {
+                list->last = prev_node;
+            }
             free(node->next);
         }
         free(node);
         return RLE_LIST_SUCCESS;
     }
-    return RLE_LIST_ERROR;
+    // return RLE_LIST_ERROR;
 }
 
 char RLEListGet(RLEList list, int index, RLEListResult *result)
@@ -222,26 +233,20 @@ char RLEListGet(RLEList list, int index, RLEListResult *result)
     if (!list) {
         return RLE_LIST_NULL_ARGUMENT;
     }
-    if(index + 1> RLEListSize(list)) { // CHECK THIS +1 is correct??
+    if(index < 0 || index + 1 > RLEListSize(list)) { // CHECK THIS +1 is correct??
         return RLE_LIST_INDEX_OUT_OF_BOUNDS;
     }
 
     RLENode node = list->first->next;
     int indicesRemaining = index;
 
-    while(indicesRemaining > node->repetitions){
+    while(indicesRemaining >= node->repetitions){
         indicesRemaining -= node->repetitions;
         node = node->next;
     }
 
-    if(node != NULL){
-        result = RLE_LIST_SUCCESS;
-        return node->letter;
-    }
-    else{
-        result = RLE_LIST_ERROR;
-        return 0;
-    }
+    *result = RLE_LIST_SUCCESS;
+    return node->letter;
 }
 
 
