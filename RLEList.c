@@ -255,11 +255,16 @@ char RLEListGet(RLEList list, int index, RLEListResult *result)
 
 static RLENode RLEListGetNodeFromIndex(RLEList list, int index, RLEListResult *result){
     if (!list) {
-        *result = RLE_LIST_NULL_ARGUMENT;
+        if (result){
+            *result = RLE_LIST_NULL_ARGUMENT;
+        }
+
         return NULL;
     }
     if(index < 0 || index + 1 > RLEListSize(list)) { /// +1 should be correct
+    if(result){
         *result = RLE_LIST_INDEX_OUT_OF_BOUNDS;
+    }
         return NULL;
     }
     // int current_idx = 0;
@@ -273,7 +278,9 @@ static RLENode RLEListGetNodeFromIndex(RLEList list, int index, RLEListResult *r
         prevNode = node;
         node = prevNode->next;
     }
-    *result = RLE_LIST_SUCCESS;
+    if(result){
+        *result = RLE_LIST_SUCCESS;
+    }
     return prevNode;
 }
 
