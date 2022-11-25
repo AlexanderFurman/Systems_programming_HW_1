@@ -6,6 +6,8 @@
 #define RLE_LIST_NULL -1
 #define NULL_CHAR '\0'
 #define EXPORT_TO_STRING_ROW_SIZE 3
+#define NUM_BASE 10
+#define LETTER_AND_NEWLINE_LENGTH 2
 #define LINE_FINISH '\n'
 //#define EXPORT_TO_STRING_LETTER_ID 0
 //#define EXPORT_TO_STRING_REPETITIONS_ID 1
@@ -41,6 +43,21 @@ struct RLEList_t{
 //implement the functions here
 
 static RLENode RLEListGetNodeFromIndex(RLEList list, int index, RLEListResult *result);
+static int listLengthNodes (RLEList list);
+static int getNumDigits (int intNum);
+static int getRLEStringLength (RLEList list);
+
+static void RLEPrint(RLEList list)
+{
+    RLENode temp = list->first;
+    while (temp->next)
+    {
+        printf("%c%d ", temp->letter, temp->repetitions);
+        temp = temp->next;
+    }
+    printf("\n");
+
+}
 
 static int listLengthNodes (RLEList list)
 {
@@ -107,6 +124,7 @@ RLEListResult RLEListAppend(RLEList list, char value)
         list->last = list->last->next;
         list->last->letter = value;
         list->last->repetitions = 1;
+        list->last->next = NULL;
     }
     else { //(list->last->letter == value)
         list->last->repetitions++;
@@ -131,6 +149,7 @@ int RLEListSize(RLEList list)
 }
 
 
+
 ///https://piazza.com/class/l8vdfbb5pf86qf/post/116
 // typedef char (*MapFunction)(char);
 RLEListResult RLEListMap(RLEList list, MapFunction map_function)
@@ -138,42 +157,61 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function)
     if (!list || !map_function){
         return RLE_LIST_NULL_ARGUMENT;
     }
-    RLENode temp = list->first;
+    if (RLEListSize(list) == 0) {
+        return RLE_LIST_SUCCESS;
+    }
+    RLENode temp = list->first->next;
+    temp->letter = map_function(temp->letter);
     while (temp->next)
     {
         temp->next->letter = map_function(temp->next->letter);
-        temp=temp->next;
+        if(temp->letter == temp->next->letter) {
+            temp->repetitions += temp->next->repetitions;
+            RLENode next = temp->next;
+            temp->next = temp->next->next;
+            free(next);
+
+        }
+        else {
+            temp=temp->next;
+        }
     }
     return RLE_LIST_SUCCESS;
 }
 
 char* RLEListExportToString(RLEList list, RLEListResult* result)
 {
-    if (!result) {
-        return NULL;
-    }
+//    if (!result) {
+//        return NULL;
+//    }
     if (!list) {
-        *result=RLE_LIST_NULL_ARGUMENT;
+        if(result){
+            *result=RLE_LIST_NULL_ARGUMENT;
+        }
         return NULL;
     }
     // size of new string: 3 letters in row (including \n), times num of rows, +1 for null terminated string
-    char* outString = malloc(listLengthNodes(list)*EXPORT_TO_STRING_ROW_SIZE*sizeof(char) + 1);
+    char* outString = malloc(getRLEStringLength(list)*sizeof(char));
     if (!outString) {
-        *result=RLE_LIST_OUT_OF_MEMORY;
+        if(result) {
+            *result=RLE_LIST_OUT_OF_MEMORY;
+        }
         return NULL;
     }
-    char* tempStringPtr = outString;
+    *outString = NULL_CHAR;
+
     RLENode temp = list->first;
     while (temp->next)
     {
-        char currentRow[EXPORT_TO_STRING_ROW_SIZE+1] = {temp->next->letter,temp->next->repetitions,
-                                                        LINE_FINISH, NULL_CHAR};
-        strcpy(tempStringPtr,currentRow);
+        char *currentRow = malloc(sizeof(char)*(LETTER_AND_NEWLINE_LENGTH + getNumDigits(temp->next->repetitions)));
+        sprintf(currentRow, "%c%d\n", temp->next->letter, temp->next->repetitions);
+        strcat(outString, currentRow);
         temp=temp->next;
-        tempStringPtr+=EXPORT_TO_STRING_ROW_SIZE;
+    }
+    if(result){
+        *result = RLE_LIST_SUCCESS;
     }
     return outString;
-    //return
 }
 
 RLEListResult RLEListRemove(RLEList list, int index){
@@ -223,6 +261,16 @@ RLEListResult RLEListRemove(RLEList list, int index){
     }
     // return RLE_LIST_ERROR;
 }
+
+//void uniteNodes(RLEList list, RLENode prevNode, RLENode node){
+//    assert(node->next);
+//    prevNode->repetitions += node->next->repetitions;
+//    prevNode->next = node->next->next;
+//    if(list->last==node->next) {
+//        list->last = prevNode;
+//    }
+//    free(node->next);
+//}
 
 char RLEListGet(RLEList list, int index, RLEListResult *result)
 {
@@ -283,7 +331,31 @@ static RLENode RLEListGetNodeFromIndex(RLEList list, int index, RLEListResult *r
     }
     return prevNode;
 }
+static int getNumDigits (int intNum) {
+    int counter = 0;
+    if (intNum == 0) {
+        return 1;
+    }
+    while (intNum!=0) {
+        intNum/=NUM_BASE;
+        counter++;
+    }
+    return counter;
+}
 
-
-
+static int getRLEStringLength (RLEList list) {
+    assert(list);
+//    if (listLengthNodes(list)==0) {
+//        return 1;
+//    }
+    int lenCounter = 1; ///NULL terminated in case of empty list;
+    RLENode temp = list->first;
+    while (temp->next)
+    {
+        lenCounter += LETTER_AND_NEWLINE_LENGTH;
+        lenCounter += (getNumDigits(temp->repetitions));
+        temp=temp->next;
+    }
+    return lenCounter;
+}
 
