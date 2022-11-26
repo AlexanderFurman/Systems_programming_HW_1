@@ -203,9 +203,10 @@ char* RLEListExportToString(RLEList list, RLEListResult* result)
     RLENode temp = list->first;
     while (temp->next)
     {
-        char *currentRow = malloc(sizeof(char)*(LETTER_AND_NEWLINE_LENGTH + getNumDigits(temp->next->repetitions)));
+        char *currentRow = malloc(sizeof(char)*(LETTER_AND_NEWLINE_LENGTH +1 + getNumDigits(temp->next->repetitions)+1));
         sprintf(currentRow, "%c%d\n", temp->next->letter, temp->next->repetitions);
         strcat(outString, currentRow);
+        free(currentRow);
         temp=temp->next;
     }
     if(result){
@@ -353,7 +354,7 @@ static int getRLEStringLength (RLEList list) {
     while (temp->next)
     {
         lenCounter += LETTER_AND_NEWLINE_LENGTH;
-        lenCounter += (getNumDigits(temp->repetitions));
+        lenCounter += (getNumDigits(temp->next->repetitions));
         temp=temp->next;
     }
     return lenCounter;

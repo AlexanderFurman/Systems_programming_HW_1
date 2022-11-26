@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <assert.h>
 #include <stdlib.h>
+#define INVERTED_CHAR '@'
+#define INVERTED_SPACE ' '
 
 /*** Static Functions Declarations ***/
 ///are there static funcs?
@@ -63,4 +65,23 @@ RLEListResult asciiArtPrintEncoded(RLEList list, FILE *out_stream)
     free(string);
     return result;
 }
+
+static char invertedMapFunc(char c)
+{
+    if (c == INVERTED_CHAR) {
+        c = INVERTED_SPACE;
+    }
+    if (c == INVERTED_SPACE) {
+        c = INVERTED_CHAR;
+    }
+    return c;
+}
+
+void invertRLEList (RLEList list)
+{
+    RLEListMap(list, invertedMapFunc);
+}
+
+
+
 
