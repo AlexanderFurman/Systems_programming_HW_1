@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/HW1_WET.iml" filepath="$PROJECT_DIR$/.idea/HW1_WET.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Systems_programming_HW_1.iml" filepath="$PROJECT_DIR$/.idea/Systems_programming_HW_1.iml" />
     </modules>
   </component>

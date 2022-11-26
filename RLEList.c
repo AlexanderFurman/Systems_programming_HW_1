@@ -1,7 +1,5 @@
 #include "RLEList.h"
-#include <stdlib.h>
-#include <assert.h>
-#include <string.h>
+
 
 #define RLE_LIST_NULL -1
 #define NULL_CHAR '\0'
@@ -43,34 +41,36 @@ struct RLEList_t{
 //implement the functions here
 
 static RLENode RLEListGetNodeFromIndex(RLEList list, int index, RLEListResult *result);
-static int listLengthNodes (RLEList list);
+//static int listLengthNodes (RLEList list);
 static int getNumDigits (int intNum);
 static int getRLEStringLength (RLEList list);
+//static void RLEPrint(RLEList list);
 
-static void RLEPrint(RLEList list)
-{
-    RLENode temp = list->first;
-    while (temp->next)
-    {
-        printf("%c%d ", temp->letter, temp->repetitions);
-        temp = temp->next;
-    }
-    printf("\n");
 
-}
+//static void RLEPrint(RLEList list)
+//{
+//    RLENode temp = list->first;
+//    while (temp->next)
+//    {
+//        printf("%c%d ", temp->letter, temp->repetitions);
+//        temp = temp->next;
+//    }
+//    printf("\n");
+//
+//}
 
-static int listLengthNodes (RLEList list)
-{
-    assert(list);
-    int counter = 0;
-    RLENode temp = list->first;
-    while (temp->next)
-    {
-        counter++;
-        temp = temp->next;
-    }
-    return counter;
-}
+//static int listLengthNodes (RLEList list)
+//{
+//    assert(list);
+//    int counter = 0;
+//    RLENode temp = list->first;
+//    while (temp->next)
+//    {
+//        counter++;
+//        temp = temp->next;
+//    }
+//    return counter;
+//}
 
 RLEList RLEListCreate()
 {
