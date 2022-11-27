@@ -45,6 +45,7 @@ int main(int argc, char* argv[])
     else if (strcmp(flag,ENCODED_FLAG) == 0) {
         asciiArtPrintEncoded(list, destOpen);
     }
+
     fclose(srcOpen);
     fclose(destOpen);
     return 0;

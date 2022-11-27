@@ -1,5 +1,8 @@
 #include "RLEList.h"
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <assert.h>
+#include <string.h>
 
 #define RLE_LIST_NULL -1
 #define NULL_CHAR '\0'
@@ -74,7 +77,7 @@ static int getRLEStringLength (RLEList list);
 
 RLEList RLEListCreate()
 {
-    RLEList linkedList = malloc(sizeof(*linkedList)); ///added * in malloc
+    RLEList linkedList = malloc(sizeof(*linkedList));
     if (!linkedList) {
         return NULL;
     }
@@ -170,7 +173,6 @@ RLEListResult RLEListMap(RLEList list, MapFunction map_function)
             RLENode next = temp->next;
             temp->next = temp->next->next;
             free(next);
-
         }
         else {
             temp=temp->next;
