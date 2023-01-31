@@ -4,7 +4,7 @@
 
 # ASCII Art Compression Tool
 This code allows the user to compress any text file using Run-Length Encoding with linked lists.
-The user can also 'invert' the ASCII art.
+The user can also 'invert' the ASCII art, by replacing the whitespaces with some character - we chose '@'.
 
 ## Usage
 Run the following in the terminal:
