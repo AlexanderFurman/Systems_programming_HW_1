@@ -30,7 +30,7 @@ We can run:
 ```
 
 
-Here's the output:
+Here's the output inverted_dog.txt:
 
 ```text
 @@/^@^\
