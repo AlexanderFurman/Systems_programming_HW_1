@@ -11,36 +11,6 @@ Run the following in the terminal:
 ```bash<source>``` - name of the text file you wish to compress
 ```bash<target>``` - name of the text file which will be created after compression/inversion.
 
-## Inversion Example
-
-Given [dog.txt](https://github.com/AlexanderFurman/Systems_programming_HW_1/blob/main/tests/dog.txt):
- 
-```text
-  /^ ^\
- / 0 0 \
- V\ Y /V
-  / - \
- /    |
-V__) ||
- ```
-We can run:
-
-```bash
-./AsciiArtTool -i dog.txt inverted_dog.txt
-```
-
-
-Here's the output inverted_dog.txt:
-
-```text
-@@/^@^\
-@/@0@0@\
-@V\@Y@/V
-@@/@-@\
-@/@@@@|
-V__)@||
-```
-
 ## Compression Example
 
 Given [erling_haaland.txt](https://github.com/AlexanderFurman/Systems_programming_HW_1/blob/main/tests/erling_haaland.txt)
@@ -79,4 +49,34 @@ k1
 .120
 
 ...
+```
+
+## Inversion Example
+
+Given [dog.txt](https://github.com/AlexanderFurman/Systems_programming_HW_1/blob/main/tests/dog.txt):
+ 
+```text
+  /^ ^\
+ / 0 0 \
+ V\ Y /V
+  / - \
+ /    |
+V__) ||
+ ```
+We can run:
+
+```bash
+./AsciiArtTool -i dog.txt inverted_dog.txt
+```
+
+
+Here's the output inverted_dog.txt:
+
+```text
+@@/^@^\
+@/@0@0@\
+@V\@Y@/V
+@@/@-@\
+@/@@@@|
+V__)@||
 ```
