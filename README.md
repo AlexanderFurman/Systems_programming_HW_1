@@ -18,11 +18,21 @@ Run the following in the terminal:
 ## Inversion Example
 
 Given [dog.txt](https://github.com/AlexanderFurman/Systems_programming_HW_1/blob/main/tests/dog.txt):
+ 
+```text
+ /^ ^\
+ / 0 0 \
+ V\ Y /V
+  / - \
+ /    |
+V__) ||
+ ```
 We can run:
 
 ```bash
 ./AsciiArtTool -i dog.txt inverted_dog.txt
 ```
+
 
 Here's the output:
 
