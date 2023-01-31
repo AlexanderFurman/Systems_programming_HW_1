@@ -1,7 +1,3 @@
-./AsciiArtTool <flags> <source> <target>
- ./AsciiArtTool -i dog.txt inverted_dog.txt
- ./AsciiArtTool -e dog.txt encoded_dog.txt
-
 # ASCII Art Compression Tool
 This code allows the user to compress any text file using Run-Length Encoding with linked lists.
 The user can also 'invert' the ASCII art, by replacing the whitespaces with some character - we chose '@'.
