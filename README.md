@@ -20,7 +20,7 @@ Run the following in the terminal:
 Given [dog.txt](https://github.com/AlexanderFurman/Systems_programming_HW_1/blob/main/tests/dog.txt):
  
 ```text
- /^ ^\
+  /^ ^\
  / 0 0 \
  V\ Y /V
   / - \
