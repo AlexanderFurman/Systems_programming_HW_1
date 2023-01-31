@@ -1,5 +1,5 @@
 # ASCII Art Compression Tool
-This code allows the user to compress any text file using Run-Length Encoding with linked lists.
+This code allows the user to compress any text file using Run-Length Encoding with linked lists (learn more [here](https://en.wikipedia.org/wiki/Run-length_encoding)).
 The user can also 'invert' the ASCII art, by replacing the whitespaces with some character - we chose '@'.
 
 ## Usage
